@@ -53,6 +53,10 @@ def parse_data(time, sound, beginning_time, end_time):
 
 def filter_data(sound, level):
     
+    ###################################################################
+    ### Here we filter only high frequencies from the original data.###
+    ###################################################################
+    
     filtered_sound =[]
     
     for i in range(len(sound)):
@@ -89,33 +93,33 @@ def fourier_transform(sound):
     
     
 def main(args):
+    ###################
+    ## Main method. ###
+    ###################
+   
+    time, amplitude = read_whole_data_from_file('filename.txt')
+
+    new_time, new_sound = parse_data(time, sound, 96.7, 96.9 ) #parsing just a bit from the data
     
-    name_of_the_file = input("Write here the name of the file of txt-file (has to be in the same place as the code):")
-    time, sound = read_whole_data_from_file('maitovalaat.txt')
-    Fs=24000
     
-    #x, y = fourier_transform(sound)
+    #next we plot the whole data
+    plt.plot(time, sound)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Amplitude')
+    #plt.savefig('sound_data.pdf',bbox_inches = 'tight')
+    plt.show()
     
-    
-    new_time, new_sound = parse_data(time, sound, 96.7, 96.9 )
-    
-    #plt.plot(time, sound)
-    #plt.xlabel('Aika (s)')
-    #plt.ylabel('Amplitudi')
-    #plt.savefig('whales.pdf',bbox_inches = 'tight')
-    #plt.show()
-    
-    # a=63-64, b=84-85 ja c= 96-97
-    
+   
+    #next we plot the spectrogram of the part of the data (Fs is the sample rate)
     plt.specgram(new_sound, Fs=24000, cmap='jet')
-    plt.xlabel('Aika (s)')
-    plt.ylabel('Taajuus (Hz)')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Frequency (Hz)')
     cbar = plt.colorbar()
     cbar.ax.set_ylabel('Intensiteetti (dB)')
     plt.clim(-175, -55)
     plt.plot([0.041, 0.041], [2000, 11000], 'k-', lw=1)
     plt.plot([0.125, 0.125], [2000, 11000], 'k-', lw=1)
-    plt.savefig('spectrogrammiauttakaa.pdf',bbox_inches = 'tight')
+    #plt.savefig('spectrogram.pdf',bbox_inches = 'tight')
     plt.show()
     
   
@@ -124,15 +128,4 @@ def main(args):
     
 if __name__ == "__main__":
     main(sys.argv[1:])
-    
- #; Sample Rate 24000
-#; Channels 1
-         
- #Fourier-muunnos
- #signal to noise-ratio
- #kohinanpoisto
- #np.meanydata tai jotain saa keskiarvot
-
-# erilaiset fourier-muunnokset eri kohdista dataa
-# aaltojen aikatiheys
 
